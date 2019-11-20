@@ -23,10 +23,10 @@ document.addEventListener('mousedown', (e) => {
 document.addEventListener('mouseup', () => drawing = false);
 document.addEventListener('mouseout', () => drawing = false);
 
-document.addEventListener('touchmove', (e) => {
+document.addEventListener('touchmove', drawTouch);
+document.addEventListener('touchstart', (e) => {
   [lastX, lastY] = [e.touches[0].clientX, e.touches[0].clientY];
-  drawing = true
-  drawTouch(e);
+  drawing = true;
 });
 document.addEventListener('touchend', () => drawing = false);
 
@@ -50,6 +50,8 @@ function draw(e) {
 
 function drawTouch(e) {
   if (!drawing) return;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
   const distance = getDistance(lastX, lastY, e.touches[0].clientX, e.touches[0].clientY);
   const moveTime = new Date();
   const time = moveTime - lastMoveTime;
