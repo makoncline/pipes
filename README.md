@@ -1,2 +1,2 @@
-# Javascript30 Template
-Single page website development environment with Prettier, ESLint, and airbnb formatting guidelines.
+# Pipes
+Draw colorful pipes on an html5 canvas. Part of the Javascript30 challenge.
