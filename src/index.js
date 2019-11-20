@@ -23,6 +23,13 @@ document.addEventListener('mousedown', (e) => {
 document.addEventListener('mouseup', () => drawing = false);
 document.addEventListener('mouseout', () => drawing = false);
 
+document.addEventListener('touchmove', (e) => {
+  [lastX, lastY] = [e.touches[0].clientX, e.touches[0].clientY];
+  drawing = true
+  drawTouch(e);
+});
+document.addEventListener('touchend', () => drawing = false);
+
 function draw(e) {
   if (!drawing) return;
   const distance = getDistance(lastX, lastY, e.offsetX, e.offsetY);
@@ -38,6 +45,24 @@ function draw(e) {
   ctx.lineTo(e.offsetX, e.offsetY);
   ctx.stroke();
   [lastX, lastY] = [e.offsetX, e.offsetY];
+  hue += 180 + 1;
+}
+
+function drawTouch(e) {
+  if (!drawing) return;
+  const distance = getDistance(lastX, lastY, e.touches[0].clientX, e.touches[0].clientY);
+  const moveTime = new Date();
+  const time = moveTime - lastMoveTime;
+  lastMoveTime = moveTime;
+  const speed = distance / (time);
+  const width = (maxWidth - (speed * 3));
+  ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+  ctx.lineWidth = width < minWidth ? minWidth : (width > maxWidth ? maxWidth : width);
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(e.touches[0].clientX, e.touches[0].clientY);
+  ctx.stroke();
+  [lastX, lastY] = [e.touches[0].clientX, e.touches[0].clientY];
   hue += 180 + 1;
 }
 
